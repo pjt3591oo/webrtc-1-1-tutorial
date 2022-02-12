@@ -32,7 +32,6 @@ window.onload = async () => {
   socket.emit('join', {room: roomID})
 }
 
-
 socket.on('room_cnt_limmit', () => {
   alert('해당 방 정원 초과입니다.')
   window.location.href='/';

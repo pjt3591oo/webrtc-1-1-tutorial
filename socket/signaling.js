@@ -6,7 +6,9 @@ function init(httpServer) {
   
   const roomService = new RoomService(2);
 
-  io.of('signaling').on('connection', (socket) => {
+  const namespace = 'signaling';
+
+  io.of(namespace).on('connection', (socket) => {
     const { id: socketId } = socket;
 
     socket.on('join', data => {
