@@ -30,22 +30,27 @@ function init(httpServer) {
   
     socket.on('offer', sdp => {
       console.log('offer')
-      socket.broadcast.emit('receive_offer', sdp);
+      const roomName = roomService.usersByRoom[socketId];
+
+      socket.broadcast.to(roomName).emit('receive_offer', sdp);
     })
   
     socket.on('answer', sdp => {
       console.log('answer')
-      socket.broadcast.emit('receive_answer', sdp);
+      const roomName = roomService.usersByRoom[socketId];
+      socket.broadcast.to(roomName).emit('receive_answer', sdp);
     })
   
     socket.on('candidate', candidate => {
-      if(candidate) socket.broadcast.emit('receive_candidate', candidate);
+      const roomName = roomService.usersByRoom[socketId];
+      if(candidate) socket.broadcast.to(roomName).emit('receive_candidate', candidate);
     })
   
     socket.on('disconnect', () => {
+      const roomName = roomService.usersByRoom[socketId];
       roomService.leaveUser(socketId);
 
-      socket.broadcast.emit('leave');
+      socket.broadcast.to(roomName).emit('leave');
     })
   })
 }
