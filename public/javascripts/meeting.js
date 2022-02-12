@@ -7,6 +7,7 @@ const msgBtn = document.getElementById('send-btn');
 
 let streams;
 let youStream;
+
 const socket = io('/signaling'); // namespace: signaling
 const pcConfig = {
   'iceServers': [  {
@@ -16,7 +17,9 @@ const pcConfig = {
     }
   ]
 };
-let pc;
+
+let pc; 
+let dc;
 
 window.onload = async () => {
   streams = await navigator.mediaDevices.getUserMedia({
@@ -62,13 +65,19 @@ socket.on('receive_answer', async (receiveSDP) => {
 })
 
 socket.on('receive_candidate', async (candidate) => {
-  // console.log(candidate)
   await pc.addIceCandidate(new RTCIceCandidate(candidate))
+})
+
+msgBtn.addEventListener('click', (e) => {
+  const { value } = msgInput
+  dc.send(value);
+  messages.innerHTML += `<li class="my">${value}</li>`;
 })
 
 async function peerConnection(stream) {
   pc = new RTCPeerConnection(pcConfig);
-  
+  dc = pc.createDataChannel('chatDataChannel');
+
   stream.getTracks().forEach(track => {
     // 해당 커넥션에 트랙과 스트램을 등록해야 상태방이 setRemoteDescription할 때 해당 track과 stream을 전달함.
     pc.addTrack(track, stream);
@@ -94,8 +103,20 @@ async function peerConnection(stream) {
     youVideo.srcObject = e.streams[0];
   };
 
-  pc.onremovestream = () => {
-    console.log(123);
+  dc.onopen = function(event) {
+    console.log('onopen');
+  }
+  
+  pc.ondatachannel = function(event) {
+    let channel = event.channel;
+    channel.onopen = function(event) {
+      // channel.send('Hi back!');
+    }
+    channel.onmessage = function(event) {
+      console.log('answer side')
+      console.log(event.data);
+      messages.innerHTML += `<li class="you">${event.data}</li>`;
+    }
   }
 }
 
