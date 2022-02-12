@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheets/meeting.css" rel="stylesheet"></link>
+  <script 
+    src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+    integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+    crossorigin="anonymous">
+  </script>
+  <title>화상회의</title>
+</head>
+<body>
+  <div id="container">
+    <div id="video">
+      <video id="my" autoplay></video>
+      <video id="you" autoplay></video>
+    </div>
+
+    <div id="chat">
+      <div id="msg-input">
+        <input type="text" id="msg" placeholder="message...">
+        <button id="send-btn">send</button>
+      </div>
+      <ul id="messages">
+        <li class="my">msg1</li>
+        <li class="you">msg2</li>
+        <li class="you">msg3</li>
+        <li class="you">msg4</li>
+        <li class="you">msg5</li>
+      </ul>
+    </div>
+  </div>
+  <script src="/javascripts/meeting.js" ></script>
+</body>
+</html>
