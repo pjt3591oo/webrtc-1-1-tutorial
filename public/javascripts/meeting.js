@@ -5,6 +5,8 @@ const messages = document.getElementById('messages');
 const msgInput = document.getElementById('msg');
 const msgBtn = document.getElementById('send-btn');
 
+const shareBtn = document.getElementById('screen-share');
+
 let streams;
 let youStream;
 
@@ -71,6 +73,23 @@ msgBtn.addEventListener('click', (e) => {
   const { value } = msgInput
   dc.send(value);
   messages.innerHTML += `<li class="my">${value}</li>`;
+})
+
+shareBtn.addEventListener('click', async () => {
+  const displayMediaOptions = {
+    video: true,
+    audio: true
+  };
+  streams = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+
+  let sender = pc.getSenders().find(function(s) {
+    return s.track.kind === 'video';
+  });
+  sender.replaceTrack(streams.getVideoTracks()[0]);
+
+  myVideo.srcObject = streams;
+
+  console.log('found sender:', sender);
 })
 
 async function peerConnection(stream) {

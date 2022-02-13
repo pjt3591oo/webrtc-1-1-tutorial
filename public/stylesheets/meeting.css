@@ -32,6 +32,19 @@ body {
   height: 100%;
 }
 
+#screen-share {
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+  border-radius: 50%;
+  border: 0;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  background: #00C73C;
+  color: white;
+}
+
 #chat {
   width: 20%;
 }
