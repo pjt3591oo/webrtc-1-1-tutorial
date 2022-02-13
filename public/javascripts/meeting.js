@@ -88,8 +88,6 @@ shareBtn.addEventListener('click', async () => {
   sender.replaceTrack(streams.getVideoTracks()[0]);
 
   myVideo.srcObject = streams;
-
-  console.log('found sender:', sender);
 })
 
 async function peerConnection(stream) {
